@@ -1,0 +1,51 @@
+// Typography
+
+// Content:
+// - font-face
+
+
+
+// font-face
+@font-face {
+  font-family: 'YanoneKaffeesatz-ExtraLight';
+  src: url('/assets/fonts/YanoneKaffeesatz-ExtraLight.eot?#iefix') format('embedded-opentype'),
+       url('/assets/fonts/YanoneKaffeesatz-ExtraLight.ttf')  format('truetype'),
+       url('/assets/fonts/YanoneKaffeesatz-ExtraLight.woff') format('woff');
+}
+@font-face {
+  font-family: 'YanoneKaffeesatz-Light';
+  src: url('/assets/fonts/YanoneKaffeesatz-Light.eot?#iefix') format('embedded-opentype'),
+       url('/assets/fonts/YanoneKaffeesatz-Light.ttf')  format('truetype'),
+       url('/assets/fonts/YanoneKaffeesatz-Light.woff') format('woff');
+}
+@font-face {
+  font-family: 'YanoneKaffeesatz-Regular';
+  src: url('/assets/fonts/YanoneKaffeesatz-Regular.eot?#iefix') format('embedded-opentype'),
+       url('/assets/fonts/YanoneKaffeesatz-Regular.ttf')  format('truetype'),
+       url('/assets/fonts/YanoneKaffeesatz-Regular.woff') format('woff');
+}
+
+$font-stack-extralight: 'YanoneKaffeesatz-ExtraLight', Helvetica, Arial, sans-serif;
+$font-stack-light: 'YanoneKaffeesatz-Light', Helvetica, Arial, sans-serif;
+$font-stack-regular: 'YanoneKaffeesatz-Regular', Helvetica, Arial, sans-serif;
+
+.font-stack-extralight {
+  font-family: $font-stack-extralight;
+}
+.font-stack-light {
+  font-family: $font-stack-light;
+}
+.font-stack-regular {
+  font-family: $font-stack-regular;
+}
+
+
+
+body{
+  font-family: $font-stack-regular;
+}
+
+
+strong{
+  font-weight: bold;
+}
