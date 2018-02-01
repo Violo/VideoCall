@@ -14,6 +14,8 @@ VTC VideoCall con WebRTC
     Deploy stage: git push origin master
     Deploy production: git push heroku master
 
+    Staging: https://vtc-videocall.herokuapp.com/
+
 ## Authors
 
 **Alessandro Violini (Violo)**
