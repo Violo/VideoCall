@@ -1,8 +1,51 @@
 // Layout
 
 // Content:
-// - Partials
+// - variables
+// - max_width_container
+// - l-main_header
 
 
 
-// Partials
+// variables
+$l-main_header-height: 100px;
+$max_width_container-width: 1360px;
+$gutter: 50px;
+
+
+
+// max_width_container
+.max_width_container{
+  margin: auto;
+  max-width: $max_width_container-width;
+}
+
+
+
+// l-main_header
+.l-main_header{
+  height: $l-main_header-height;
+  background-color: $neutral_white;
+  .l-main_header__logo{
+    padding-top: 15px;
+    padding-left: $gutter;
+  }
+  .l-main_header__nav{
+    float: right;
+    margin-top: 50px;
+    padding-right: $gutter;
+    ul{
+      list-style: none;
+      li{
+        @extend %font-stack-light;
+        display: inline-block;
+        margin-left: 35px;
+        font-size: 18px;
+        a:link, a:visited{
+          color: $neutral_black;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

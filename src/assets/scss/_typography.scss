@@ -29,13 +29,13 @@ $font-stack-extralight: 'YanoneKaffeesatz-ExtraLight', Helvetica, Arial, sans-se
 $font-stack-light: 'YanoneKaffeesatz-Light', Helvetica, Arial, sans-serif;
 $font-stack-regular: 'YanoneKaffeesatz-Regular', Helvetica, Arial, sans-serif;
 
-.font-stack-extralight {
+%font-stack-extralight {
   font-family: $font-stack-extralight;
 }
-.font-stack-light {
+%font-stack-light {
   font-family: $font-stack-light;
 }
-.font-stack-regular {
+%font-stack-regular {
   font-family: $font-stack-regular;
 }
 
@@ -46,6 +46,13 @@ body{
 }
 
 
+
 strong{
   font-weight: bold;
+}
+
+
+
+hr{
+  display: none;
 }
