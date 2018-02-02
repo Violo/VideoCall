@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomepageComponent } from './pages/homepage/homepage.component';
+import { RoomComponent } from './pages/room/room.component';
 
 import { AppComponent } from './app.component';
 
@@ -13,13 +14,18 @@ const routes: Routes = [{
     path: '',
     redirectTo: 'homepage',
     pathMatch: 'full'
+  }, {
+    path: 'room',
+    component: RoomComponent,
+    pathMatch: 'full'
   }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomepageComponent
+    HomepageComponent,
+    RoomComponent
   ],
   imports: [
     BrowserModule,
