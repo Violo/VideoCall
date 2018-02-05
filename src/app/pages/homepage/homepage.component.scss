@@ -1,0 +1,30 @@
+// Homepage
+
+// Content:
+// - import global styles
+// - form_login
+// - description
+
+
+
+// import global styles
+@import "../../../assets/scss/styles";
+
+
+
+// form_login
+.form_login{
+  background-color: $neutral_white;
+  width: 50%;
+  margin: 50px auto 50px auto;
+  padding: 25px;
+}
+
+
+
+// description
+.description{
+  color: $neutral_black;
+  font-size: 20px;
+  text-align: center;
+}

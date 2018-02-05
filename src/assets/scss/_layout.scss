@@ -4,11 +4,14 @@
 // - variables
 // - max_width_container
 // - l-main_header
+// - l-main_footer
+// - l-main_article
 
 
 
 // variables
 $l-main_header-height: 100px;
+$l-main_footer-height: 80px;
 $max_width_container-width: 1360px;
 $gutter: 50px;
 
@@ -24,10 +27,15 @@ $gutter: 50px;
 
 // l-main_header
 .l-main_header{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: $l-main_header-height;
-  background-color: $neutral_white;
+  background-color: rgba(255, 255, 255, 0.5);
   .l-main_header__logo{
     padding-top: 15px;
+    opacity: 1;
     padding-left: $gutter;
   }
   .l-main_header__nav{
@@ -48,4 +56,39 @@ $gutter: 50px;
       }
     }
   }
+}
+
+
+
+// l-main_footer
+.l-main_footer{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: $l-main_footer-height;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#00319f+0,00a4ff+100 */
+  background: #00319f;
+  background: -moz-linear-gradient(top, #00a4ff 0%, #00319f 100%);
+  background: -webkit-linear-gradient(top, #00a4ff 0%,#00319f 100%);
+  background: linear-gradient(to bottom, #00a4ff 0%,#00319f 100%);
+  color: $neutral_white;
+  .l-main_footer__version {
+    padding-top: 10px;
+    font-size: 11px;
+    line-height: 2em;
+    text-align: center;
+  }
+}
+
+
+
+// l-main_article
+.l-main_article{
+  position: absolute;
+  top: $l-main_header-height;
+  bottom: $l-main_footer-height;
+  left: 0;
+  width: 100vw;
+  overflow-y: auto;
 }

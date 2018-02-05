@@ -41,8 +41,17 @@ $font-stack-regular: 'YanoneKaffeesatz-Regular', Helvetica, Arial, sans-serif;
 
 
 
+html{
+  height: 100vh;
+}
 body{
   font-family: $font-stack-regular;
+  height: 100vh;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,c8e3fb+100 */
+  background: $neutral_white;
+  background: -moz-radial-gradient(center, ellipse cover, $neutral_white 0%, #c8e3fb 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, $neutral_white 0%,#c8e3fb 100%);
+  background: radial-gradient(ellipse at center, $neutral_white 0%,#c8e3fb 100%);
 }
 
 
