@@ -2,6 +2,7 @@
 
 // Content:
 // - variables
+// - box-sizing
 // - max_width_container
 // - l-main_header
 // - l-main_footer
@@ -14,6 +15,13 @@ $l-main_header-height: 100px;
 $l-main_footer-height: 80px;
 $max_width_container-width: 1360px;
 $gutter: 50px;
+
+
+
+// box-sizing
+*{
+  box-sizing: border-box;
+}
 
 
 
@@ -74,7 +82,8 @@ $gutter: 50px;
   background: linear-gradient(to bottom, #00a4ff 0%,#00319f 100%);
   color: $neutral_white;
   .l-main_footer__version {
-    padding-top: 10px;
+    @extend %font-stack-light;
+    margin-top: 5px;
     font-size: 11px;
     line-height: 2em;
     text-align: center;
@@ -91,4 +100,8 @@ $gutter: 50px;
   left: 0;
   width: 100vw;
   overflow-y: auto;
+  padding: 30px;
+  @include tablet-portrait{
+    padding: 10px;
+  }
 }

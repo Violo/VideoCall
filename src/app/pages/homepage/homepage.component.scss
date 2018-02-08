@@ -18,6 +18,10 @@
   width: 50%;
   margin: 50px auto 50px auto;
   padding: 25px;
+  text-align: center;
+  @include tablet-portrait{
+    width: 100%;
+  }
   .form_login__title{
     @extend %font-stack-light;
     font-size: 28px;
@@ -25,31 +29,18 @@
     padding-bottom: 20px;
     color: $neutral_black;
     text-transform: uppercase;
-    text-align: center;
+    letter-spacing: 1px;
   }
   input[type=text]{
-    display: block;
-    padding: 10px;
-    margin: 20px auto 20px auto;
-    width: 300px;
-    border: 1px solid gainsboro;
-  }
-  input[type=text]::placeholder{
-    @extend %font-stack-regular;
-    font-size: 18px;
-    text-align: center;
-    color: gainsboro;
+    @extend .input_style1;
+    margin-bottom: 15px;
+    width: 70%;
   }
   button {
-    @extend %font-stack-light;
+    @extend .button_style1;
     display: block;
-    margin: auto;
-    color: $neutral-white;
+    margin: 10px auto 10px auto;
     width: 80px;
-    padding: 10px;
-    background-color: #00a4ff;
-    border: 0px;
-    border-radius: 2px;
   }
 
 }
@@ -61,4 +52,7 @@
   color: $neutral_black;
   font-size: 20px;
   text-align: center;
+  line-height: 1.5em;
+  margin-bottom: 30px;
+  letter-spacing: 0.5px;
 }
