@@ -63,6 +63,15 @@ $gutter: 50px;
         }
       }
     }
+    @include smartphone{
+      margin-top: 0px;
+      ul{
+        li{
+          margin-top: 15px;
+          display: block;
+        }
+      }
+    }
   }
 }
 
