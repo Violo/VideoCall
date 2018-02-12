@@ -11,6 +11,7 @@
   @extend %font-stack-regular;
   padding: 10px;
   margin: 0 0 5px 0;
+  text-align: center;
   border: 1px solid $input-brd;
   color: $neutral_black;
   &::placeholder{

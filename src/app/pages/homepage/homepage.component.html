@@ -12,11 +12,12 @@
 <hr />
 <article class="l-main_article">
   <div class="max_width_container">
-    <form class="form_login">
+    <form class="form_login" [formGroup]="accessForm" (ngSubmit)="submit()" novalidate>
       <h1 class="form_login__title">Open a topic room</h1>
-      <input type="text" placeholder="Topic..." />
-      <input type="text" placeholder="Nickname..." />
-      <button type="submit" routerLink="/room">Go</button>
+      <input type="text" placeholder="Topic..." formControlName="topic" />
+      <input type="text" placeholder="Nickname..." formControlName="nickname" />
+      <p class="form_error_msg" *ngIf="!accessForm.valid && submitted">Both fields are required.</p>
+      <button type="submit">Open room</button>
     </form>
     <p class="description">
       VTC Conf is a conference call room generator based on WebRTC <br />

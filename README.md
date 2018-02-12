@@ -6,7 +6,7 @@ VTC VideoCall con WebRTC
     
     nvm use [8.9.3]
     npm install
-    npm start
+    npm run local
 
 
 ### Repository e deploy
