@@ -3,6 +3,7 @@
 // Content:
 // - input_style1
 // - button_style1
+// - form_error_msg
 
 
 
@@ -31,4 +32,12 @@
   background-color: $primary_color;
   border: none;
   border-radius: 4px;
+}
+
+
+
+.form_error_msg{
+  color: $danger_color;
+  font-size: 16px;
+  letter-spacing: 0.5px;
 }
