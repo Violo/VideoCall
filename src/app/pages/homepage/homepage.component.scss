@@ -16,9 +16,12 @@
 .form_login{
   background-color: $neutral_white;
   width: 50%;
-  margin: 50px auto 50px auto;
+  margin: 25px auto 50px auto;
   padding: 25px;
   text-align: center;
+  @include desktop{
+    width: 80%;
+  }
   @include tablet-portrait{
     width: 100%;
   }

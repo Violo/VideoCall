@@ -92,9 +92,9 @@ $gutter: 50px;
   color: $neutral_white;
   .l-main_footer__version {
     @extend %font-stack-light;
-    margin-top: 5px;
+    margin-top: 15px;
     font-size: 11px;
-    line-height: 2em;
+    line-height: 1.5em;
     text-align: center;
   }
 }

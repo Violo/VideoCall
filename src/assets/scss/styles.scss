@@ -32,11 +32,6 @@ $desktop:1024px;
     @content;
   }
 }
-@mixin huge-desktop {
-  @media (min-width: #{$s-desktop-width + 1px}) {
-    @content;
-  }
-}
 
 
 
