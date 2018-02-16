@@ -1,1 +1,10 @@
 <h1>ROOM</h1>
+
+<video #localVideo autoplay playsinline></video>
+<video #remoteVideo autoplay playsinline></video>
+
+<div>
+  <button [disabled]="startButtonDisabled" (click)="start()">Start</button>
+  <button [disabled]="callButtonDisabled" (click)="call()">Call</button>
+  <button [disabled]="hangupButtonDisabled" (click)="hangup()">Hang Up</button>
+</div>
