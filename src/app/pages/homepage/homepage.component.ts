@@ -28,7 +28,7 @@ export class HomepageComponent {
   submit() {
     this.submitted = true;
     if (this.accessForm.valid){
-      this.router.navigate(["/room"]);
+      this.router.navigate(["/room", this.accessForm.value.topic]);
     } else{
     }
   }

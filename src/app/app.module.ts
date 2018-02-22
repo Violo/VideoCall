@@ -1,26 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { RoomComponent } from './pages/room/room.component';
 
 import { AppComponent } from './app.component';
-
-const routes: Routes = [{
-    path: 'homepage',
-    component: HomepageComponent,
-    pathMatch: 'full'
-  }, {
-    path: '',
-    redirectTo: 'homepage',
-    pathMatch: 'full'
-  }, {
-    path: 'room',
-    component: RoomComponent,
-    pathMatch: 'full'
-  }
-];
+import { routes } from './app.routes';
 
 @NgModule({
   declarations: [
