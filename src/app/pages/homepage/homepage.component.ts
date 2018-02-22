@@ -29,6 +29,7 @@ export class HomepageComponent {
     this.submitted = true;
     if (this.accessForm.valid){
       this.router.navigate(["/room", this.accessForm.value.topic]);
+      window.localStorage.setItem("currentUser", this.accessForm.value.nickname);
     } else{
     }
   }

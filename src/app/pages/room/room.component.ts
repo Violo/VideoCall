@@ -8,10 +8,12 @@ import { ActivatedRoute } from '@angular/router';
 export class RoomComponent {
 
   topic: string;
+  nickname: string;
 
   constructor(
     private route: ActivatedRoute
     ){
+    this.nickname = window.localStorage.getItem("currentUser");
     this.topic = this.route.snapshot.params.name;
   }
 }
