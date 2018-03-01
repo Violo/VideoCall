@@ -8,3 +8,11 @@
   <button [disabled]="callButtonDisabled" (click)="call()">Call</button>
   <button [disabled]="hangupButtonDisabled" (click)="hangup()">Hang Up</button>
 </div>
+
+<textarea [disabled]="dataChannelSend.disabled" [(ngModel)]="dataChannelSend.value"
+    placeholder="Press Start, enter some text, then press Send."></textarea>
+<textarea [disabled]="dataChannelReceive.disabled" [ngModel]="dataChannelReceive.value"></textarea>
+
+<div>
+  <button [disabled]="sendButtonDisabled" (click)="send()">Send</button>
+</div>

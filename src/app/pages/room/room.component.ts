@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-room',
@@ -14,15 +14,21 @@ export class RoomComponent implements OnInit {
   startButtonDisabled: boolean;
   callButtonDisabled: boolean;
   hangupButtonDisabled: boolean;
+  sendButtonDisabled: boolean;
+
+  dataChannelSend: { value, disabled };
+  dataChannelReceive: { value, disabled };
 
   private startTime: number;
   private localStream: MediaStream;
   private remoteStream: MediaStream;
-  private pc1: RTCPeerConnection;
-  private pc2: RTCPeerConnection;
+  private pc1: RTCPeerConnection | any;
+  private pc2: RTCPeerConnection | any;
+  private sendChannel: any;
+  private receiveChannel: any;
   private offerOptions: RTCOfferOptions;
 
-  constructor() { }
+  constructor(private cd: ChangeDetectorRef) { }
 
   get localVideo(): HTMLVideoElement {
     return this._localVideo ? this._localVideo.nativeElement : null;
@@ -34,6 +40,7 @@ export class RoomComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetButton();
+    this.resetDataChannel();
     this.offerOptions = {
       offerToReceiveAudio: 1,
       offerToReceiveVideo: 1
@@ -72,7 +79,14 @@ export class RoomComponent implements OnInit {
     //   this.trace('Using audio device: ' + audioTracks[0].label);
     // }
     const servers = null;
+    const pcConstraint = null;
+    const dataConstraint = null;
+
     this.pc1 = new RTCPeerConnection(servers);
+    this.sendChannel = this.pc1.createDataChannel('sendDataChannel', dataConstraint);
+    this.sendChannel.onopen = () => this.onSendChannelStateChange();
+    this.sendChannel.onclose = () => this.onSendChannelStateChange();
+
     this.trace('Created local peer connection object pc1');
     this.pc1.onicecandidate = (e) => {
       this.onIceCandidate(this.pc1, e);
@@ -82,6 +96,7 @@ export class RoomComponent implements OnInit {
     this.pc2.onicecandidate = (e) => {
       this.onIceCandidate(this.pc2, e);
     };
+    this.pc2.ondatachannel = (event) => this.receiveChannelCallback(event);
     // this.pc1.oniceconnectionstatechange = (e) => {
     //   this.onIceStateChange(this.pc1, e);
     // };
@@ -107,6 +122,38 @@ export class RoomComponent implements OnInit {
     this.pc1 = null;
     this.pc2 = null;
     this.resetButton();
+    this.resetDataChannel();
+  }
+
+  private onSendChannelStateChange() {
+    const readyState = this.sendChannel.readyState;
+    this.trace('Send channel state is: ' + readyState);
+    if (readyState === 'open') {
+      this.dataChannelSend.disabled = false;
+      this.sendButtonDisabled = false;
+    } else {
+      this.dataChannelSend.disabled = true;
+      this.sendButtonDisabled = true;
+    }
+  }
+
+  private onReceiveChannelStateChange() {
+    const readyState = this.receiveChannel.readyState;
+    this.trace('Receive channel state is: ' + readyState);
+  }
+
+  private receiveChannelCallback(event) {
+    this.trace('Receive Channel Callback');
+    this.receiveChannel = event.channel;
+    this.receiveChannel.onmessage = (e) => this.onReceiveMessageCallback(e);
+    this.receiveChannel.onopen = () => this.onReceiveChannelStateChange();
+    this.receiveChannel.onclose = () => this.onReceiveChannelStateChange();
+  }
+
+  private onReceiveMessageCallback(event) {
+    this.trace('Received Message: ' + event.data);
+    this.dataChannelReceive.value = event.data;
+    this.cd.detectChanges();
   }
 
   private onCreateOfferSuccess(desc: RTCSessionDescription) {
@@ -186,6 +233,19 @@ export class RoomComponent implements OnInit {
     this.startButtonDisabled = false;
     this.callButtonDisabled = true;
     this.hangupButtonDisabled = true;
+    this.sendButtonDisabled = true;
+  }
+
+  private resetDataChannel() {
+    this.dataChannelReceive = {
+      value: '',
+      disabled: true
+    };
+
+    this.dataChannelSend = {
+      value: '',
+      disabled: true
+    }
   }
 
   private onIceCandidate(pc: RTCPeerConnection, e: RTCPeerConnectionIceEvent) {
@@ -196,6 +256,12 @@ export class RoomComponent implements OnInit {
     this.getOtherPc(pc).addIceCandidate(new RTCIceCandidate(e.candidate))
       .then(() => this.trace(this.getName(pc) + ' addIceCandidate success'))
       .catch((err) => this.trace(this.getName(pc) + ' failed to add ICE Candidate: ' + err.toString()));
+  }
+
+  private send() {
+    const data = this.dataChannelSend.value;
+    this.sendChannel.send(data);
+    this.trace('Send Data: ' + data);
   }
 
 }
