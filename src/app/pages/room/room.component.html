@@ -1,18 +1,4 @@
 <h1>ROOM</h1>
 
-<video #localVideo autoplay playsinline></video>
+<video #localVideo autoplay muted playsinline></video>
 <video #remoteVideo autoplay playsinline></video>
-
-<div>
-  <button [disabled]="startButtonDisabled" (click)="start()">Start</button>
-  <button [disabled]="callButtonDisabled" (click)="call()">Call</button>
-  <button [disabled]="hangupButtonDisabled" (click)="hangup()">Hang Up</button>
-</div>
-
-<textarea [disabled]="dataChannelSend.disabled" [(ngModel)]="dataChannelSend.value"
-    placeholder="Press Start, enter some text, then press Send."></textarea>
-<textarea [disabled]="dataChannelReceive.disabled" [ngModel]="dataChannelReceive.value"></textarea>
-
-<div>
-  <button [disabled]="sendButtonDisabled" (click)="send()">Send</button>
-</div>

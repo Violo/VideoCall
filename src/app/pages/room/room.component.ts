@@ -13,23 +13,17 @@ export class RoomComponent implements OnInit, OnDestroy {
   @ViewChild('remoteVideo')
   _remoteVideo: ElementRef;
 
-  startButtonDisabled: boolean;
-  callButtonDisabled: boolean;
-  hangupButtonDisabled: boolean;
-  sendButtonDisabled: boolean;
-  isInitiatior: boolean;
+  room: string;
 
-  dataChannelSend: { value, disabled };
-  dataChannelReceive: { value, disabled };
-
-  private startTime: number;
+  private isChannelReady: boolean;
+  private isInitiator: boolean;
+  private isStarted: boolean;
+  private pc: RTCPeerConnection;
   private localStream: MediaStream;
   private remoteStream: MediaStream;
-  private pc1: RTCPeerConnection | any;
-  private pc2: RTCPeerConnection | any;
-  private sendChannel: any;
-  private receiveChannel: any;
-  private offerOptions: RTCOfferOptions;
+  private turnReady;
+  private pcConfig;
+  private sdpConstraints: RTCOfferOptions;
   private socket: SocketIOClient.Socket;
 
   constructor(private cd: ChangeDetectorRef) { }
@@ -43,256 +37,191 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resetButton();
-    this.resetDataChannel();
-    this.offerOptions = {
+    this.room = 'test';
+    this.isChannelReady = false;
+    this.isInitiator = false;
+    this.isStarted = false;
+
+    this.sdpConstraints = {
       offerToReceiveAudio: 1,
       offerToReceiveVideo: 1
     };
-    this.socket = io.connect();
+
+    this.pcConfig = {
+      'iceServers': [{
+        'urls': 'stun:stun.l.google.com:19302'
+      }]
+    };
+
     this.initSocketConnection();
+    // TODO: handle TURN server
+    this.initVideo();
   }
 
   ngOnDestroy(): void {
+    this.sendMessage('bye');
     this.socket.disconnect();
   }
 
-  start() {
-    this.trace('Requesting local stream');
-    this.startButtonDisabled = true;
+  initVideo() {
+    console.log('Requesting local stream');
     navigator.mediaDevices.getUserMedia({
       audio: false,
       video: true
     })
       .then(stream => {
-        this.trace('Received local stream');
+        console.log('Received local stream');
         this.localVideo.srcObject = stream;
         this.localStream = stream;
-        this.callButtonDisabled = false;
+        this.sendMessage('got user media');
+        if (this.isInitiator) {
+          this.maybeStart();
+        }
       })
       .catch(function (e) {
-        this.resetButton();
         alert('getUserMedia() error: ' + e.name);
       });
   }
 
-  call() {
-    this.callButtonDisabled = true;
-    this.hangupButtonDisabled = false;
-    this.trace('Starting call');
-    // const videoTracks = this.localStream.getVideoTracks();
-    // const audioTracks = this.localStream.getAudioTracks();
-    // if (videoTracks.length > 0) {
-    //   this.trace('Using video device: ' + videoTracks[0].label);
-    // }
-    // if (audioTracks.length > 0) {
-    //   this.trace('Using audio device: ' + audioTracks[0].label);
-    // }
-    const servers = null;
-    const pcConstraint = null;
-    const dataConstraint = null;
+  private maybeStart() {
+    console.log('>>>>>>> maybeStart() ', this.isStarted, this.localStream, this.isChannelReady);
+    if (!this.isStarted && typeof this.localStream !== 'undefined' && this.isChannelReady) {
+      console.log('>>>>>> creating peer connection');
+      this.createPeerConnection();
+      this.pc.addStream(this.localStream);
+      this.isStarted = true;
+      console.log('isInitiator', this.isInitiator);
+      if (this.isInitiator) {
+        this.doCall();
+      }
+    }
+  }
 
-    this.pc1 = new RTCPeerConnection(servers);
-    this.sendChannel = this.pc1.createDataChannel('sendDataChannel', dataConstraint);
-    this.sendChannel.onopen = () => this.onSendChannelStateChange();
-    this.sendChannel.onclose = () => this.onSendChannelStateChange();
+  private doCall() {
+    this.pc.createOffer()
+      .then((sessionDescription) => {
+        this.pc.setLocalDescription(sessionDescription);
+        console.log('setLocalAndSendMessage sending message', sessionDescription);
+        this.sendMessage(sessionDescription);
+      }).catch((event) => {
+        console.log('createOffer() error: ', event);
+      });
+  }
 
-    this.trace('Created local peer connection object pc1');
-    this.pc1.onicecandidate = (e) => {
-      this.onIceCandidate(this.pc1, e);
-    };
-    this.pc2 = new RTCPeerConnection(servers);
-    this.trace('Created remote peer connection object pc2');
-    this.pc2.onicecandidate = (e) => {
-      this.onIceCandidate(this.pc2, e);
-    };
-    this.pc2.ondatachannel = (event) => this.receiveChannelCallback(event);
-    // this.pc1.oniceconnectionstatechange = (e) => {
-    //   this.onIceStateChange(this.pc1, e);
-    // };
-    // this.pc2.oniceconnectionstatechange = (e) => {
-    //   this.onIceStateChange(this.pc2, e);
-    // };
-    this.pc2.onaddstream = (e) => this.gotRemoteStream(e);
+  private createPeerConnection() {
+    try {
+      this.pc = new RTCPeerConnection(null);
+      this.pc.onicecandidate = this.handleIceCandidate.bind(this);
+      this.pc.onaddstream = this.handleRemoteStreamAdded.bind(this);
+      this.pc.onremovestream = this.handleRemoteStreamRemoved.bind(this);
+      console.log('Created RTCPeerConnnection');
+    } catch (e) {
+      console.log('Failed to create PeerConnection, exception: ' + e.message);
+      alert('Cannot create RTCPeerConnection object.');
+      return;
+    }
+  }
 
-    this.pc1.addStream(this.localStream);
-    this.trace('Added local stream to pc1');
+  private handleRemoteStreamAdded(event) {
+    console.log('Remote stream added.');
+    this.remoteStream = event.stream;
+    this.remoteVideo.srcObject = this.remoteStream;
+  }
 
-    this.trace('pc1 createOffer start');
-    this.pc1.createOffer(
-      (desc) => this.onCreateOfferSuccess(desc),
-      (err) => this.onCreateSessionDescriptionError(err),
-      this.offerOptions);
+  private handleRemoteStreamRemoved(event) {
+    console.log('Remote stream removed. Event: ', event);
+  }
+
+  private handleIceCandidate(event) {
+    console.log('icecandidate event: ', event);
+    if (event.candidate) {
+      this.sendMessage({
+        type: 'candidate',
+        label: event.candidate.sdpMLineIndex,
+        id: event.candidate.sdpMid,
+        candidate: event.candidate.candidate
+      });
+    } else {
+      console.log('End of candidates.');
+    }
   }
 
   private initSocketConnection() {
-    this.socket.emit('create or join', 'test');
+    this.socket = io.connect();
+    this.socket.emit('create or join', this.room);
+    console.log('Attempted to create or  join room ' + this.room);
 
     this.socket.on('created', (room, clientId) => {
-      this.isInitiatior = true;
+      console.log('Created room ' + room);
+      this.isInitiator = true;
     });
 
     this.socket.on('full', function(room) {
-      console.log('Message from client: Room ' + room + ' is full :^(');
+      console.log('Room ' + room + ' is full');
     });
 
-    this.socket.on('ipaddr', function(ipaddr) {
-      console.log('Message from client: Server IP address is ' + ipaddr);
+    this.socket.on('join', (room) => {
+      console.log('Another peer made a request to join room ' + room);
+      console.log('This peer is the initiator of room ' + room + '!');
+      this.isChannelReady = true;
     });
 
-    this.socket.on('joined', function(room, clientId) {
-      this.isInitiator = false;
+    this.socket.on('joined', (room, clientId) => {
+      console.log('joined: ' + room);
+      this.isChannelReady = true;
+    });
+
+    this.socket.on('message', (message) => {
+      console.log('Client received message:' + message);
+      if (message === 'got user media') {
+        this.maybeStart();
+      } else if (message.type === 'offer') {
+        if (!this.isInitiator && !this.isStarted) {
+          this.maybeStart();
+        }
+        this.pc.setRemoteDescription(new RTCSessionDescription(message));
+        this.doAnswer();
+      } else if (message.type === 'answer' && this.isStarted) {
+        this.pc.setRemoteDescription(new RTCSessionDescription(message));
+      } else if (message.type === 'candidate' && this.isStarted) {
+        const candidate = new RTCIceCandidate({
+          sdpMLineIndex: message.label,
+          candidate: message.candidate
+        });
+        this.pc.addIceCandidate(candidate);
+      } else if (message === 'bye' && this.isStarted) {
+        this.handleRemoteHangup();
+      }
     });
 
   }
 
-  private hangup() {
-    this.trace('Ending call');
-    this.pc1.close();
-    this.pc2.close();
-    this.pc1 = null;
-    this.pc2 = null;
-    this.resetButton();
-    this.resetDataChannel();
+  private handleRemoteHangup() {
+    console.log('Session terminated.');
+    stop();
+    this.isInitiator = false;
   }
 
-  private onSendChannelStateChange() {
-    const readyState = this.sendChannel.readyState;
-    this.trace('Send channel state is: ' + readyState);
-    if (readyState === 'open') {
-      this.dataChannelSend.disabled = false;
-      this.sendButtonDisabled = false;
-    } else {
-      this.dataChannelSend.disabled = true;
-      this.sendButtonDisabled = true;
-    }
+  private stop() {
+    this.isStarted = false;
+    this.pc.close();
+    this.pc = null;
   }
 
-  private onReceiveChannelStateChange() {
-    const readyState = this.receiveChannel.readyState;
-    this.trace('Receive channel state is: ' + readyState);
+  private sendMessage(message) {
+    this.socket.emit('message', message);
   }
 
-  private receiveChannelCallback(event) {
-    this.trace('Receive Channel Callback');
-    this.receiveChannel = event.channel;
-    this.receiveChannel.onmessage = (e) => this.onReceiveMessageCallback(e);
-    this.receiveChannel.onopen = () => this.onReceiveChannelStateChange();
-    this.receiveChannel.onclose = () => this.onReceiveChannelStateChange();
-  }
-
-  private onReceiveMessageCallback(event) {
-    this.trace('Received Message: ' + event.data);
-    this.dataChannelReceive.value = event.data;
-    this.cd.detectChanges();
-  }
-
-  private onCreateOfferSuccess(desc: RTCSessionDescription) {
-    this.trace('Offer from pc1\n' + desc.sdp);
-    this.trace('pc1 setLocalDescription start');
-    this.pc1.setLocalDescription(desc)
-      .then(() => this.onSetLocalSuccess(this.pc1))
-      .catch((err) => this.onSetSessionDescriptionError(err));
-    this.trace('pc2 setRemoteDescription start');
-    this.pc2.setRemoteDescription(desc)
-      .then(() => this.onSetRemoteSuccess(this.pc2))
-      .catch((err) => this.onSetSessionDescriptionError(err));
-    this.trace('pc2 createAnswer start');
-    // Since the 'remote' side has no media stream we need
-    // to pass in the right constraints in order for it to
-    // accept the incoming offer of audio and video.
-    this.pc2.createAnswer()
-      .then((aDesc) => this.onCreateAnswerSuccess(aDesc))
-      .catch((err) => this.onCreateSessionDescriptionError(err));
-  }
-
-  private onSetLocalSuccess(pc: RTCPeerConnection) {
-    this.trace(this.getName(pc) + ' setLocalDescription complete');
-  }
-
-  private onSetRemoteSuccess(pc: RTCPeerConnection) {
-    this.trace(this.getName(pc) + ' setRemoteDescription complete');
-  }
-
-  private onCreateAnswerSuccess(desc: RTCSessionDescription) {
-    this.trace('Answer from pc2:\n' + desc.sdp);
-    this.trace('pc2 setLocalDescription start');
-    this.pc2.setLocalDescription(desc)
-      .then(() => this.onSetLocalSuccess(this.pc2))
-      .catch((err) => this.onSetSessionDescriptionError(err));
-    this.trace('pc1 setRemoteDescription start');
-    this.pc1.setRemoteDescription(desc)
-      .then(() => this.onSetLocalSuccess(this.pc1))
-      .catch((err) => this.onSetSessionDescriptionError(err));
-  }
-
-  private onSetSessionDescriptionError(error) {
-    this.trace('Failed to set session description: ' + error.toString());
-  }
-
-  private onCreateSessionDescriptionError(error: DOMError) {
-    this.trace('Failed to create session description: ' + error.toString());
-  }
-
-  private getName(pc: RTCPeerConnection) {
-    return (pc === this.pc1) ? 'pc1' : 'pc2';
-  }
-
-  private getOtherPc(pc: RTCPeerConnection) {
-    return (pc === this.pc1) ? this.pc2 : this.pc1;
-  }
-
-  private onIceStateChange(pc: RTCPeerConnection, e: Event) {
-    if (pc) {
-      this.trace(this.getName(pc) + ' ICE state: ' + pc.iceConnectionState);
-    }
-  }
-
-  private gotRemoteStream(e: MediaStreamEvent) {
-    this.remoteVideo.srcObject = e.stream;
-  }
-
-  private trace(text: string): void {
-    if (text[text.length - 1] === '\n') {
-      text = text.substring(0, text.length - 1);
-    }
-
-    console.log(text);
-  }
-
-  private resetButton() {
-    this.startButtonDisabled = false;
-    this.callButtonDisabled = true;
-    this.hangupButtonDisabled = true;
-    this.sendButtonDisabled = true;
-  }
-
-  private resetDataChannel() {
-    this.dataChannelReceive = {
-      value: '',
-      disabled: true
-    };
-
-    this.dataChannelSend = {
-      value: '',
-      disabled: true
-    };
-  }
-
-  private onIceCandidate(pc: RTCPeerConnection, e: RTCPeerConnectionIceEvent) {
-    if (!e.candidate) {
-      return;
-    }
-
-    this.getOtherPc(pc).addIceCandidate(new RTCIceCandidate(e.candidate))
-      .then(() => this.trace(this.getName(pc) + ' addIceCandidate success'))
-      .catch((err) => this.trace(this.getName(pc) + ' failed to add ICE Candidate: ' + err.toString()));
-  }
-
-  private send() {
-    const data = this.dataChannelSend.value;
-    this.sendChannel.send(data);
-    this.trace('Send Data: ' + data);
+  private doAnswer() {
+    console.log('Sending answer to peer.');
+    this.pc.createAnswer()
+    .then((sessionDescription) => {
+      // Set Opus as the preferred codec in SDP if Opus is present.
+      //  sessionDescription.sdp = preferOpus(sessionDescription.sdp);
+      this.pc.setLocalDescription(sessionDescription);
+      console.log('setLocalAndSendMessage sending message', sessionDescription);
+      this.sendMessage(sessionDescription);
+    }, (error) => console.log('Failed to create session description: ' + error.toString()));
   }
 
 }
