@@ -1,10 +1,12 @@
-import { Component, ViewChild, OnInit, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import * as io from 'socket.io-client';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html'
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
   @ViewChild('localVideo')
   _localVideo: ElementRef;
 
@@ -15,6 +17,7 @@ export class RoomComponent implements OnInit {
   callButtonDisabled: boolean;
   hangupButtonDisabled: boolean;
   sendButtonDisabled: boolean;
+  isInitiatior: boolean;
 
   dataChannelSend: { value, disabled };
   dataChannelReceive: { value, disabled };
@@ -27,6 +30,7 @@ export class RoomComponent implements OnInit {
   private sendChannel: any;
   private receiveChannel: any;
   private offerOptions: RTCOfferOptions;
+  private socket: SocketIOClient.Socket;
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -45,6 +49,12 @@ export class RoomComponent implements OnInit {
       offerToReceiveAudio: 1,
       offerToReceiveVideo: 1
     };
+    this.socket = io.connect();
+    this.initSocketConnection();
+  }
+
+  ngOnDestroy(): void {
+    this.socket.disconnect();
   }
 
   start() {
@@ -113,6 +123,27 @@ export class RoomComponent implements OnInit {
       (desc) => this.onCreateOfferSuccess(desc),
       (err) => this.onCreateSessionDescriptionError(err),
       this.offerOptions);
+  }
+
+  private initSocketConnection() {
+    this.socket.emit('create or join', 'test');
+
+    this.socket.on('created', (room, clientId) => {
+      this.isInitiatior = true;
+    });
+
+    this.socket.on('full', function(room) {
+      console.log('Message from client: Room ' + room + ' is full :^(');
+    });
+
+    this.socket.on('ipaddr', function(ipaddr) {
+      console.log('Message from client: Server IP address is ' + ipaddr);
+    });
+
+    this.socket.on('joined', function(room, clientId) {
+      this.isInitiator = false;
+    });
+
   }
 
   private hangup() {
