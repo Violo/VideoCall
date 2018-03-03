@@ -245,7 +245,7 @@ export class RoomComponent implements OnInit {
     this.dataChannelSend = {
       value: '',
       disabled: true
-    }
+    };
   }
 
   private onIceCandidate(pc: RTCPeerConnection, e: RTCPeerConnectionIceEvent) {
