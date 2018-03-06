@@ -10,7 +10,7 @@ export class RoomComponent implements OnInit {
   @ViewChild('localVideo') _localVideo: ElementRef;
   topic: string;
   nickname: string;
-  streamLocal: MediaStream:
+  streamLocal: MediaStream;
 
   constructor(
     private route: ActivatedRoute
@@ -26,8 +26,8 @@ export class RoomComponent implements OnInit {
 
   getMedia(){
     navigator.mediaDevices.getUserMedia({
-      audio: false;
-      video: true;
+      audio: false,
+      video: true
     })
     .then((stream) => {
       this.localVideo.srcObject = stream;
