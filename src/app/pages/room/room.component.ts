@@ -20,7 +20,7 @@ export class RoomComponent implements OnInit {
     this.localVideo;
   }
 
-  get localVideo(): HtmlVideoElement{
+  get localVideo(): HTMLVideoElement{
     return this._localVideo ? this._localVideo.nativeElement : null;
   }
 
