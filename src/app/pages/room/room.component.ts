@@ -50,4 +50,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
     this.localVideo.srcObject = null;
   }
+
+  toggleAudio() {
+    const audioTrack = this.streamLocal.getAudioTracks()[0];
+    audioTrack.enabled = !audioTrack.enabled;
+  }
+
+  toggleVideo() {
+    const videoTrack = this.streamLocal.getVideoTracks()[0];
+    videoTrack.enabled = !videoTrack.enabled;
+  }
 }
