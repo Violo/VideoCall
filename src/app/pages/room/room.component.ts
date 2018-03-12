@@ -1,11 +1,11 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html'
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
 
   @ViewChild('localVideo') _localVideo: ElementRef;
   topic: string;
@@ -14,32 +14,32 @@ export class RoomComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute
-    ){
+    ) {
     this.nickname = window.localStorage.getItem("currentUser");
     this.topic = this.route.snapshot.params.name;
-    this.localVideo;
   }
 
   get localVideo(): HTMLVideoElement{
     return this._localVideo ? this._localVideo.nativeElement : null;
   }
 
-  getMedia(){
+  getMedia() {
     navigator.mediaDevices.getUserMedia({
-      audio: false,
+      audio: true,
       video: true
     })
     .then((stream) => {
       this.localVideo.srcObject = stream;
       this.streamLocal = stream;
-    })
+      this.localVideo.muted = true;
+    });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getMedia();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     const tracks = this.streamLocal.getTracks();
     tracks.forEach((t) => {
       this.streamLocal.removeTrack(t);
