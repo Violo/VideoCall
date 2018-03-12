@@ -40,9 +40,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.stopStream();
+  }
+
+  stopStream() {
     const tracks = this.streamLocal.getTracks();
     tracks.forEach((t) => {
-      this.streamLocal.removeTrack(t);
+      t.stop();
     });
     this.localVideo.srcObject = null;
   }
