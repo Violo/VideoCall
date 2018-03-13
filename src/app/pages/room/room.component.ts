@@ -8,9 +8,16 @@ import { ActivatedRoute } from '@angular/router';
 export class RoomComponent implements OnInit, OnDestroy {
 
   @ViewChild('localVideo') _localVideo: ElementRef;
+  @ViewChild('remoteVideo') _remoteVideo: ElementRef;
   topic: string;
   nickname: string;
   streamLocal: MediaStream;
+  streamRemote: MediaStream;
+  private isChannelReady;
+  private isInitiator;
+  private isStarted;
+  private sdpConstraints;
+  private pcConfig;
 
   constructor(
     private route: ActivatedRoute
@@ -21,6 +28,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   get localVideo(): HTMLVideoElement{
     return this._localVideo ? this._localVideo.nativeElement : null;
+  }
+
+  get remoteVideo(): HTMLVideoElement{
+    return this._remoteVideo ? this._remoteVideo.nativeElement : null;
   }
 
   getMedia() {
@@ -36,6 +47,19 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isChannelReady = false;
+    this.isInitiator = false;
+    this.isStarted = false;
+    this.sdpConstraints = {
+      offerToReceiveAudio: 1,
+      offerToReceiveVideo: 1
+    };
+
+    this.pcConfig = {
+      'iceServers': [{
+         'urls': 'stun:stun.l.google.com:19302'
+      }]
+    };
     this.getMedia();
   }
 
