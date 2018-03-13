@@ -80,6 +80,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopStream();
+    this.sendMessage('bye');
+    this.socket.disconnect();
   }
 
   stopStream() {
