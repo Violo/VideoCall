@@ -1,30 +1,34 @@
-<h1>Topic page</h1>
+<header class="room_header">
+  <img src="assets/img/logo-vtc-conf.svg" alt="VTC Conf" class="room_header__logo"/>
+  <button class="room_header__button" routerLink="/">
+    Homepage
+  </button>
+  <h1 class="room_header__topic">
+    <span>speaking about:</span>
+    {{ topic }}
+  </h1>
+</header>
+<hr />
+<article class="room_content">
+  I nomi dei partecipanti sono: {{ nickname }}<br /><br />
+  <div>
+    <video volume="0" #localVideo autoplay="true" playsinline></video>
+  </div>
+  <div>
+    <video #remoteVideo autoplay="true" playsinline></video>
+  </div>
 
-Il topic di questa call è: {{ topic }}<br />
-I nomi dei partecipanti sono: {{ nickname }}<br /><br />
+  <button (click)="toggleVideo()">
+    Show/hide Cam
+  </button>
+  <br /><br />
 
-<div>
-  <video volume="0" #localVideo autoplay="true" playsinline></video>
-</div>
-<div>
-  <video #remoteVideo autoplay="true" playsinline></video>
-</div>
+  <button (click)="toggleAudio()">
+  Activate/deactivate Mic
+  </button>
+  <br /><br />
 
-<button routerLink="/">
-  back to homepage
-</button>
-<br /><br />
-
-<button (click)="toggleVideo()">
-  Show/hide Cam
-</button>
-<br /><br />
-
-<button (click)="toggleAudio()">
-Activate/deactivate Mic
-</button>
-<br /><br />
-
-<button (click)="stopStream()">
-Close call
-</button>
+  <button (click)="stopStream()">
+  Close call
+  </button>
+</article>

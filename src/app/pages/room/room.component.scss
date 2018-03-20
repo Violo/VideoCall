@@ -1,0 +1,60 @@
+// Room Page
+
+// Content:
+// - import global styles
+// - room_header
+// - room_content
+
+
+
+// import global styles
+@import "../../../assets/scss/palette";
+@import "../../../assets/scss/typography";
+@import "../../../assets/scss/atoms";
+
+
+
+// room_header
+$room_header-height: 50px;
+.room_header{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px 15px 5px 15px;
+  width: 100vw;
+  height: $room_header-height;
+  background-color: rgba(0, 117, 200, 0.4);
+  .room_header__logo{
+    float: left;
+    width: 36px;
+    height: 42px;
+  }
+  .room_header__topic{
+    @extend %font-stack-light;
+    margin: 0 150px 0 150px;
+    color: $neutral_black;
+    font-size: 24px;
+    text-align: center;
+    span{
+      @extend %font-stack-extralight;
+      font-size: 14px;
+      display: block;
+    }
+  }
+  .room_header__button{
+    @extend .button_style1;
+    float: right;
+  }
+}
+
+
+
+// room_content
+.room_content{
+  position: absolute;
+  top: $room_header-height;
+  left: 0;
+  width: 100vw;
+  height: calc(100% - #{$room_header-height});
+  overflow-y: auto;
+}

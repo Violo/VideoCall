@@ -4,7 +4,8 @@ import * as io from 'socket.io-client';
 
 @Component({
   selector: 'app-room',
-  templateUrl: './room.component.html'
+  templateUrl: './room.component.html',
+  styleUrls: ['./room.component.scss']
 })
 export class RoomComponent implements OnInit, OnDestroy {
 
