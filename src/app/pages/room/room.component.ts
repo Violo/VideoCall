@@ -46,6 +46,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       console.log('Received local stream');
       this.localVideo.srcObject = stream;
       this.localStream = stream;
+      this.localVideo.muted = true;
       this.sendMessage('got user media');
       if (this.isInitiator) {
         this.maybeStart();
