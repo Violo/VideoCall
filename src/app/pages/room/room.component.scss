@@ -5,6 +5,7 @@
 // - room_header
 // - room_content
 // - room_footer
+// - buttons
 
 
 
@@ -58,6 +59,35 @@ $room_header-height: 50px;
   width: 100vw;
   height: calc(100% - #{$room_header-height});
   overflow-y: auto;
+  .room_content__local_video{
+    position: relative;
+    margin-top: 40px;
+    float: left;
+    margin-left: 1%;
+    margin-right: 1%;
+    width: 48%;
+    video{
+      display: block;
+      width: 100%;
+    }
+    .room_content__local_video__nickname{
+      position: absolute;
+      color: $neutral_black;
+      padding: 5px 10px;
+      margin: 0;
+      width: 100%;
+      background-color: rgba(74, 144, 226, 0.4);
+      height: 30px;
+      font-size: 18px;
+    }
+  }
+  .room_content__remote_video{
+    @extend .room_content__local_video;
+    float: right;
+    &.m-no_stream{
+      display: none;
+    }
+  }
 }
 
 
@@ -96,12 +126,14 @@ $footer-width: 230px;
 
 
 
-// button_mic
-.button_mic{
+// buttons
+@mixin controller_button{
   position: relative;
   display: inline-block;
   top: -7px;
-  background: transparent url('../../../assets/img/ico_mic.svg') no-repeat 50% 100%;
+  background-color: transparent;
+  background-position: 50% 100%;
+  background-repeat: no-repeat;
   border: none;
   outline: none;
   height: 45px;
@@ -111,19 +143,12 @@ $footer-width: 230px;
   }
 }
 
+.button_mic{
+  @include controller_button;
+  background-image: url('../../../assets/img/ico_mic.svg');
+}
 
-
-// button_web
 .button_web{
-  position: relative;
-  display: inline-block;
-  top: -7px;
-  background: transparent url('../../../assets/img/ico_web.svg') no-repeat 50% 100%;
-  border: none;
-  outline: none;
-  height: 45px;
-  width: 45px;
-  span{
-    display: none;
-  }
+  @include controller_button;
+  background-image: url('../../../assets/img/ico_web.svg');
 }

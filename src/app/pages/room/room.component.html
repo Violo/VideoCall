@@ -10,11 +10,12 @@
 </header>
 <hr />
 <article class="room_content">
-  I nomi dei partecipanti sono: {{ nickname }}<br /><br />
-  <div>
+  <div class="room_content__local_video">
+    <p class="room_content__local_video__nickname">{{ nickname }}</p>
     <video volume="0" #localVideo autoplay="true" playsinline></video>
   </div>
-  <div>
+  <div class="room_content__remote_video m-no_stream">
+    <p>Guest</p>
     <video #remoteVideo autoplay="true" playsinline></video>
   </div>
 </article>
