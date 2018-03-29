@@ -4,6 +4,7 @@
 // - import global styles
 // - room_header
 // - room_content
+// - room_footer
 
 
 
@@ -57,4 +58,72 @@ $room_header-height: 50px;
   width: 100vw;
   height: calc(100% - #{$room_header-height});
   overflow-y: auto;
+}
+
+
+
+// room_footer
+$footer-width: 230px;
+.room_footer{
+  position: absolute;
+  width: $footer-width;
+  height: 48px;
+  text-align: center;
+  left: calc(50% - #{$footer-width}/2);
+  bottom: 0px;
+  background-color: rgba(74, 144, 226, 0.4);
+}
+
+
+
+// button_call
+.button_call{
+  position: relative;
+  display: inline-block;
+  top: -10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 50%;
+  background: $button_call_color url('../../../assets/img/ico_call.svg') no-repeat 50% 50%;
+  border: none;
+  outline: none;
+  height: 45px;
+  width: 45px;
+  span{
+    display: none;
+  }
+}
+
+
+
+// button_mic
+.button_mic{
+  position: relative;
+  display: inline-block;
+  top: -7px;
+  background: transparent url('../../../assets/img/ico_mic.svg') no-repeat 50% 100%;
+  border: none;
+  outline: none;
+  height: 45px;
+  width: 45px;
+  span{
+    display: none;
+  }
+}
+
+
+
+// button_web
+.button_web{
+  position: relative;
+  display: inline-block;
+  top: -7px;
+  background: transparent url('../../../assets/img/ico_web.svg') no-repeat 50% 100%;
+  border: none;
+  outline: none;
+  height: 45px;
+  width: 45px;
+  span{
+    display: none;
+  }
 }

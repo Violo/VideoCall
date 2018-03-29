@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="pagina-call" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPad" transform="translate(-497.000000, -723.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="button-call" transform="translate(487.000000, 712.000000)">
+                <g id="ico_phone" transform="translate(10.000000, 11.000000)">
+                    <path d="M15.9506667,15.9506667 C13.2139259,18.6874074 10.0447407,21.3035062 8.79234568,20.0507654 C6.99861728,18.2573827 5.89279012,16.6952593 1.93925926,19.8727407 C-2.01461728,23.0516049 1.02217284,25.1695802 2.75955556,26.9076543 C4.76449383,28.9122469 12.2384198,27.0130864 19.6259259,19.6266173 C27.0123951,12.2384198 28.9129383,4.76449383 26.9066173,2.7588642 C25.1688889,1.0211358 23.0509136,-2.01461728 19.8734321,1.93960494 C16.6952593,5.89209877 18.2566914,6.9982716 20.0507654,8.792 C21.3028148,10.0447407 18.6874074,13.2135802 15.9506667,15.9506667 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

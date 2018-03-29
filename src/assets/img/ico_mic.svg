@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="23px" height="32px" viewBox="0 0 23 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>ico_mic</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="pagina-call" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPad" transform="translate(-572.000000, -730.000000)" fill="#00057A" fill-rule="nonzero">
+            <g id="ico_mic" transform="translate(572.000000, 730.000000)">
+                <path d="M11.2,22.4 C14.7296,22.4 17.6,19.528 17.6,16 L17.6,6.4 C17.6,2.8704 14.7296,0 11.2,0 C7.6704,0 4.8,2.8704 4.8,6.4 L4.8,16 C4.8,19.528 7.6704,22.4 11.2,22.4 Z" id="Shape"></path>
+                <path d="M22.4,16 L22.4,12.8 C22.4,11.9168 21.6848,11.2 20.8,11.2 C19.9152,11.2 19.2,11.9168 19.2,12.8 L19.2,16 C19.2,20.4112 15.6112,24 11.2,24 C6.7888,24 3.2,20.4112 3.2,16 L3.2,12.8 C3.2,11.9168 2.4848,11.2 1.6,11.2 C0.7152,11.2 0,11.9168 0,12.8 L0,16 C0,21.632 4.1808,26.2912 9.6,27.072 L9.6,28.8 L4.8,28.8 C3.9152,28.8 3.2,29.5152 3.2,30.4 C3.2,31.2848 3.9152,32 4.8,32 L17.6,32 C18.4848,32 19.2,31.2848 19.2,30.4 C19.2,29.5152 18.4848,28.8 17.6,28.8 L12.8,28.8 L12.8,27.072 C18.2192,26.2912 22.4,21.632 22.4,16 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

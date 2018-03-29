@@ -17,18 +17,16 @@
   <div>
     <video #remoteVideo autoplay="true" playsinline></video>
   </div>
-
-  <button (click)="toggleVideo()">
-    Show/hide Cam
-  </button>
-  <br /><br />
-
-  <button (click)="toggleAudio()">
-  Activate/deactivate Mic
-  </button>
-  <br /><br />
-
-  <button (click)="stopStream()">
-  Close call
-  </button>
 </article>
+<hr />
+<footer class="room_footer">
+  <button class="button_web" (click)="toggleVideo()">
+    <span>Show/hide Cam</span>
+  </button>
+  <button class="button_call" (click)="stopStream()">
+    <span>Close call</span>
+  </button>
+  <button class="button_mic" (click)="toggleAudio()">
+    <span>Activate/deactivate Mic</span>
+  </button>
+</footer>
