@@ -11,9 +11,7 @@ export class HomepageComponent {
   accessForm: FormGroup;
   submitted: boolean;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.createForm();
     this.submitted = false;
   }

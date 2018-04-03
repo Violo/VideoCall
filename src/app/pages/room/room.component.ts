@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as io from 'socket.io-client';
 
 @Component({
@@ -25,9 +25,9 @@ export class RoomComponent implements OnInit, OnDestroy {
   private sdpConstraints: RTCOfferOptions;
   private socket: SocketIOClient.Socket;
 
-  constructor(
-    private route: ActivatedRoute
-    ) { }
+  constructor( private route: ActivatedRoute, private router: Router) {
+
+  }
 
   get localVideo(): HTMLVideoElement{
     return this._localVideo ? this._localVideo.nativeElement : null;
@@ -92,6 +92,10 @@ export class RoomComponent implements OnInit, OnDestroy {
       t.stop();
     });
     this.localVideo.srcObject = null;
+  }
+
+  closeCall() {
+    this.router.navigate(["/"]);
   }
 
   toggleAudio() {

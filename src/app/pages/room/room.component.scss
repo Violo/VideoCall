@@ -84,6 +84,9 @@ $room_header-height: 50px;
   .room_content__remote_video{
     @extend .room_content__local_video;
     float: right;
+    .room_content__remote_video__nickname{
+      @extend .room_content__local_video__nickname;
+    }
     &.m-no_stream{
       display: none;
     }

@@ -14,8 +14,8 @@
     <p class="room_content__local_video__nickname">{{ nickname }}</p>
     <video volume="0" #localVideo autoplay="true" playsinline></video>
   </div>
-  <div class="room_content__remote_video m-no_stream">
-    <p>Guest</p>
+  <div class="room_content__remote_video" [ngClass]="{'m-no_stream' : !remoteStream}">
+    <p class="room_content__remote_video__nickname">{{ nickname }}</p>
     <video #remoteVideo autoplay="true" playsinline></video>
   </div>
 </article>
@@ -24,7 +24,7 @@
   <button class="button_web" (click)="toggleVideo()">
     <span>Show/hide Cam</span>
   </button>
-  <button class="button_call" (click)="stopStream()">
+  <button class="button_call" (click)="closeCall()">
     <span>Close call</span>
   </button>
   <button class="button_mic" (click)="toggleAudio()">
