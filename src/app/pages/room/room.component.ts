@@ -82,7 +82,11 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopStream();
-    this.sendMessage('bye');
+    this.sendMessage({
+      type: 'bye',
+      nickname: this.nickname
+    });
+
     this.socket.disconnect();
   }
 
@@ -151,7 +155,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           candidate: message.candidate
         });
         this.pc.addIceCandidate(candidate);
-      } else if (message === 'bye' && this.isStarted) {
+      } else if (message.type === 'bye' && this.isStarted) {
         this.handleRemoteHangup();
       }
     });
@@ -222,7 +226,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   private handleRemoteHangup() {
     console.log('Session terminated.');
-    stop();
+    this.stop();
+    this.remoteStream = null;
     this.isInitiator = false;
   }
 
