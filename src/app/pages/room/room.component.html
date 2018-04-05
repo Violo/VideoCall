@@ -21,13 +21,13 @@
 </article>
 <hr />
 <footer class="room_footer">
-  <button class="button_web" (click)="toggleVideo()">
+  <button class="button_web" [ngClass]="{'m-disable' : !localVideoEnable}" (click)="toggleVideo()">
     <span>Show/hide Cam</span>
   </button>
   <button class="button_call" (click)="closeCall()">
     <span>Close call</span>
   </button>
-  <button class="button_mic" (click)="toggleAudio()">
+  <button class="button_mic" [ngClass]="{'m-disable' : !localAudioEnable}" (click)="toggleAudio()">
     <span>Activate/deactivate Mic</span>
   </button>
 </footer>
