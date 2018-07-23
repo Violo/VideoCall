@@ -14,7 +14,7 @@
     <p class="room_content__local_video__nickname">{{ nickname }}</p>
     <video volume="0" #localVideo autoplay="true" playsinline></video>
   </div>
-  <div class="room_content__remote_video" [ngClass]="{'m-no_stream' : !remoteStream}">
+  <div class="room_content__remote_video" [ngClass]="{'m-no_stream' : !remoteStream, 'm-hide' : !remoteVideoEnable, 'm-mute' : !remoteAudioEnable}">
     <p class="room_content__remote_video__nickname">{{ nickname }}</p>
     <video #remoteVideo autoplay="true" playsinline></video>
   </div>

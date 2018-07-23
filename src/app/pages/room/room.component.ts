@@ -51,6 +51,22 @@ export class RoomComponent implements OnInit, OnDestroy {
     return this.localStream.getAudioTracks()[0].enabled;
   }
 
+  get remoteVideoEnable(): boolean{
+    console.log('this.remoteStream: ', this.remoteStream);
+    if(!this.remoteStream){
+      return false;
+    }
+    console.log('this.remoteStream.getVideoTracks(): ', this.remoteStream.getVideoTracks());
+    return this.remoteStream.getVideoTracks()[0].enabled;
+  }
+
+  get remoteAudioEnable(): boolean{
+    if(!this.remoteStream){
+      return false;
+    }
+    return this.remoteStream.getAudioTracks()[0].enabled;
+  }
+
   initVideo() {
     navigator.mediaDevices.getUserMedia({
       audio: true,
