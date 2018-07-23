@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="40px" height="39px" viewBox="0 0 40 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>ico_web off</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M0.5,32.5 L32.461227,0.538772951" id="path-1"></path>
+        <filter x="-14.1%" y="-14.1%" width="128.2%" height="128.2%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="2.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="2.5" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.619607843   0 0 0 0 0.780392157   0 0 0 0 0.945098039  0 0 0 1 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="pagina-call" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPad" transform="translate(-419.000000, -657.000000)">
+            <g id="ico_web-off" transform="translate(422.000000, 660.000000)">
+                <path d="M16.1012658,0 C9.10812423,0 3.44303797,5.62470455 3.44303797,12.5537806 C3.44303797,19.4828567 9.10812423,25.1139241 16.1012658,25.1139241 C23.0944074,25.1139241 28.7594937,19.4892195 28.7594937,12.5601434 C28.7594937,5.63106734 23.0944074,0 16.1012658,0 Z M16.1012658,18.1084945 C13.0088858,18.1084945 10.5003368,15.6206444 10.5003368,12.5537806 C10.5003368,9.48691684 13.0088858,6.99906675 16.1012658,6.99906675 C19.1936459,6.99906675 21.7021948,9.48691684 21.7021948,12.5537806 C21.7021948,15.6206444 19.1936459,18.1084945 16.1012658,18.1084945 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+                <path d="M24.032,24.1012658 C21.7536,25.6798553 18.9824,26.6091863 16,26.6091863 C13.0176,26.6091863 10.2464,25.6798553 7.968,24.1012658 L0,28.6078843 L0,30.7848101 L32,30.7848101 L32,28.6078843 L24.032,24.1012658 Z" id="XMLID_2_" fill="#FFFFFF" fill-rule="nonzero"></path>
+                <circle id="XMLID_1_" fill="#FFFFFF" fill-rule="nonzero" cx="16.1012658" cy="12.6582278" r="2.53164557"></circle>
+                <g id="Line" stroke-linecap="square">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use stroke="#FFFFFF" stroke-width="3" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
